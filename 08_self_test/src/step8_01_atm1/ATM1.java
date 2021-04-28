@@ -66,104 +66,101 @@ public class ATM1 {
 	}
 	
 	void printAccountMenu() {
-		//계좌관리 => 1.계좌생성/2.삭제/3.조회/0.로그아웃
-		while (true) {
+		//계좌관리 => 계좌생성/삭제/출력/로그아웃 (login메서드 실행 후 호출)
+		while(true) {
+			System.out.print("[1.계좌생성] [2.계좌삭제] [3.조회] [0.로그아웃] : ");
+			int sel = scan.nextInt();	
 			
-			System.out.print("[1.계좌생성] [2.계좌삭제] [3.조회] [0.로그아웃] : "); //안내창 띄움
-			// sel 정수형 변수 선언후 값입력
-			int sel = scan.nextInt();				
+			String makeAccount = Integer.toString(ran.nextInt(90001)+10000);
+			//랜덤 계좌번호 생성(10000~100000)
 			
-			// makeAccount 문자열 변수 선언 후 10000~100000까지의 랜덤정수를 문자열로 변환 후 makeAccount에 복사
-			String makeAccount = Integer.toString(ran.nextInt(90001) + 10000);
-			 
-			
-			if (sel == 1) { // 계좌생성 선택 시
-				if (userManager.user[identifier].accCount == 0) { //user클래스를 ID검색인덱스값(identifier)로 검색하여 해당accCount가 0이면
-					userManager.user[identifier].acc = new Account1[1]; //해당 User클래스의 Account 클래스 배열 크기를 1로 만듬
-					
-					userManager.user[identifier].acc[0] = new Account1(); 		//Account배열의 0번인덱스에 인스턴스 생성
-					userManager.user[identifier].acc[0].accNumber = makeAccount;	// 위의 랜덤값을 해당인스턴스의 number값에 복사
+			if(sel == 1) {
+				// 계좌생성 구현
 				
+				if (userManager.user[identifier].accCount == 0) {
+					userManager.user[identifier].acc = new Account1[1];
+					userManager.user[identifier].acc[0] = new Account1();
+					userManager.user[identifier].acc[0].accNumber = makeAccount;
 				}
-				else { 				//user클래스를 ID검색인덱스값(identifier)로 검색하여 해당accCount가 0이 아니면
-					Account1[] temp = userManager.getUser(identifier).acc; //검색된 user클래스 계정클래스배열을 temp에 복사 
-//					Account[] temp2 = userManager.user[identifier].acc;
-//					System.out.println("temp : " + temp);
-//					System.out.println("temp : " + temp2);
-
-					int tempAccCount = userManager.getUser(identifier).accCount; //검색된 user클래스 계정수값을 tempAccCount에 복사 
-					userManager.user[identifier].acc = new Account1[tempAccCount+1]; // 계정클래스배열을 크기 1늘려 새로 생성
-					for (int i = 0; i < tempAccCount; i++) {	// 현재까지의 계정클래스의 배열크기만큼 for문을 돌리고
-						userManager.user[identifier].acc[i] = temp[i]; // 현재까지의 계정클래스 배열값을 순차적으로 1칸 늘린 계정클래스 배열에 복사
+				//현재 로그인된 고객의 계좌수가 0이면 계좌배열 및 인스턴스 각1개씩 생성 후 입력받은 계좌번호 복사
+				else {
+					Account1[] tempAccount = userManager.user[identifier].acc;
+					int tempAccCount = userManager.user[identifier].accCount;
+					userManager.user[identifier].acc = new Account1[tempAccCount + 1];
+					for (int i = 0; i < tempAccCount; i++) {
+						userManager.user[identifier].acc[i] = tempAccount[i];
 					}
-					userManager.user[identifier].acc[tempAccCount] = new Account1(); // 계정클래스에 새로운 계정인스턴스 생성 
-					userManager.user[identifier].acc[tempAccCount].accNumber = makeAccount; //새로운 계정 클래스의 넘버값에 새로운 계정번호(랜덤번호)복사
-					
+					userManager.user[identifier].acc[tempAccCount] = new Account1();
+					userManager.user[identifier].acc[tempAccCount].accNumber = makeAccount;
 				}
-				userManager.user[identifier].accCount++;	//계정수 1증가
-				System.out.println("[메시지]'"+makeAccount +"'계좌가 생성되었습니다.\n"); // 계정 생성 안내
-			} 	
-			else if (sel == 2) { // 계좌 삭제 선택시 
-				
-				if (userManager.user[identifier].accCount == 0) {    //현재 메모리에 올라온 user클래스의 계좌수가 0이면
-					System.out.println("[메시지] 더 이상 삭제할 수 없습니다.\n"); // 삭제 불가 에러 메시지
-					continue;											//밑에 내용들 스킵
+				userManager.user[identifier].accCount++;
+				System.out.println("[메시지] " + userManager.user[identifier].id + " 님 계좌번호 " + makeAccount + "가 생성되었습니다.");
+			}
+			
+			else if(sel == 2) {
+				// 계좌삭제 구현
+
+				if(userManager.user[identifier].accCount == 0) {
+					System.out.println("[메시지] 삭제할 계좌 없음");
+					continue;
 				}
 				
-				if ( userManager.user[identifier].accCount == 1) {
-					System.out.println("[메시지] 계좌번호 :'"+ userManager.user[identifier].acc[0].accNumber+"' 삭제 되었습니다.\n");
+				else if(userManager.user[identifier].accCount == 1) {
+					System.out.println("[메시지] " + userManager.user[identifier].id + "님 계좌번호" + userManager.user[identifier].acc[0].accNumber + "가 삭제되었습니다.");
 					userManager.user[identifier].acc = null;
 				}
+				
 				else {
+					System.out.print("삭제하려는 계좌번호 입력 : ");
+					String delAccount = scan.next();
 					
-					System.out.print("삭제 하고 싶은 계좌 번호를 입력하세요 : ");
-					String deleteAccount = scan.next();
 					int tempAccCount = userManager.user[identifier].accCount;
 					int delIdx = -1;
-					for (int i = 0; i <tempAccCount; i++) {
-						if (deleteAccount.equals(userManager.user[identifier].acc[i].accNumber)) {
+					
+					for (int i = 0; i < tempAccCount; i++) {
+						if(userManager.user[identifier].acc[i].accNumber.equals(delAccount)){
 							delIdx = i;
 						}
 					}
 					
-					if ( delIdx == -1 ) {
-						System.out.println("[메시지] 계좌번호를 확인하세요.\n");
+					if(delIdx == -1) {
+						System.out.println("[메시지] 계좌번호 다시 확인 요청.");
 						continue;
 					}
 					else {
-						System.out.println("[메시지] 계좌번호 :'"+ userManager.user[identifier].acc[delIdx].accNumber+"' 삭제 되었습니다.\n");
-						
-						Account1[] temp = userManager.user[identifier].acc;
+						System.out.println("[메시지] 계좌번호" + userManager.user[identifier].acc[delIdx].accNumber + "가 삭제되었습니다.");
+						Account1[] tempAccount = userManager.user[identifier].acc;
 						userManager.user[identifier].acc = new Account1[tempAccCount-1];
-						
-						
 						for (int i = 0; i < delIdx; i++) {
-							userManager.user[identifier].acc[i] = temp[i];
+							userManager.user[identifier].acc[i] = tempAccount[i];
 						}
-						for (int i = delIdx; i < tempAccCount - 1; i++) {
-							userManager.user[identifier].acc[i] = temp[i+1];
+						for (int i = delIdx; i < tempAccCount-1; i++) {
+							userManager.user[identifier].acc[i] = tempAccount[i+1];
 						}
 					}
-					
 				}
 				userManager.user[identifier].accCount--;
-				
+
 			}
-			
-			else if (sel == 3) {
-				if (userManager.user[identifier].accCount == 0) {
-					System.out.println("[메시지] 생성된 계좌가 없습니다.\n");
+			else if(sel == 3) {
+				// 조회 구현
+				if(userManager.user[identifier].accCount == 0) {
+					System.out.println("[메시지] 생성된 계좌가 없습니다.");
 				}
+				
 				else {
 					userManager.user[identifier].printAccount();
 				}
-			}   
-			else if (sel == 0) {
+			}
+			
+			else if(sel == 0) {
 				logout();
 				break;
 			}
 			
 		}
+		
+		
 	}
 	
 }
