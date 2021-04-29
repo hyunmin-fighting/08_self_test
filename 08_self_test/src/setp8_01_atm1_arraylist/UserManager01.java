@@ -42,6 +42,43 @@ public class UserManager01 {
 		return user.get(idx);
 	}
 	
-//	int logUser() {}
-	void leave() {}
+	int logUser() {
+		int identifier = -1;
+	
+		System.out.print("[로그인] ID 입력 : ");
+		String id = scan.next();
+		
+		for (int i = 0; i < userCount; i++) {
+			if(user.get(i).id.equals(id)) {
+				identifier = i;
+				System.out.println("[메시지] " + user.get(i).id + "님 로그인 되었습니다.");
+			}
+		}
+		
+		return identifier;
+	}
+	
+	
+	void leave() {
+		System.out.print("[탈퇴] ID 입력 : ");
+		String id = scan.next();
+		int identifier = -1;
+		
+		for (int i = 0; i < userCount; i++) {
+			if(user.get(i).id.equals(id)){
+				identifier = i;
+			}
+		}
+		
+		if(identifier == -1) {
+			System.out.println("[메시지] ID를 다시 확인하세요.");
+			return;
+		}
+		else {
+			System.out.println("[메시지] " + user.get(identifier).id + "님 탈퇴되었습니다.");
+			user.remove(identifier);
+			userCount--;
+		}
+		
+	}
 }
