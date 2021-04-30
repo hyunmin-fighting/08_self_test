@@ -3,12 +3,12 @@ package step8_02_atm2.copy1;
 import java.util.Random;
 import java.util.Scanner;
 
-public class UserManager {
+public class UserManager1 {
 	
 	//싱글톤
-	private UserManager() {}
-	private static UserManager instance = new UserManager();
-	public static UserManager getInstance() {
+	private UserManager1() {}
+	private static UserManager1 instance = new UserManager1();
+	public static UserManager1 getInstance() {
 		return instance;
 	}
 
@@ -16,17 +16,42 @@ public class UserManager {
 	Random ran = new Random();
 	
 	final int ACC_MAX_CNT = 3;			// 최대 개설 가능한 계좌 수
-	User[] userList = null;				// 전체 회원정보
+	User1[] userList = null;				// 전체 회원정보
 	int userCnt = 0;					// 전체 회원 수
 	
 	
 //	void printAllUser() {}
 	
 	
-//	boolean getCheckAcc(String account) {}
+	boolean getCheckAcc(String account) {
+		boolean isDuple = false;
+		for (int i = 0; i < userCnt; i++) {
+			for (int j = 0; j < userList[i].accCnt; j++) {
+				if(userList[i].acc[j].accNumber.equals(account)) {
+					isDuple = true;
+				}
+			}
+		}
+		return isDuple;
+	}
 	
 	
-//	int logUser() {}
+	int logUser() {
+		
+		int identifier = -1;
+		
+		System.out.print("[로그인] ID입력 요청 : ");
+		String id = scan.next();
+		System.out.print("[로그인] PW입력 요청 : ");
+		String pw = scan.next();
+		
+		for (int i = 0; i < userCnt; i++) {
+			if(userList[i].id.equals(id) && userList[i].pw.equals(pw)) {
+				identifier = i;
+			}
+		}
+		return identifier;
+	}
 	
 	boolean checkId(String id) {
 		
@@ -49,6 +74,34 @@ public class UserManager {
 		System.out.print("[회원가입] PW 입력 요청 : ");
 		String pw = scan.next();
 		
+		boolean isResult = checkId(id); //checkId 메서드를 통해 id중복확인 후 결과값을 반환 받는다.
+		
+		if(isResult) {
+			System.out.println("[메시지] ID가 중복입니다.");
+			return;
+		}
+		
+		if(userCnt == 0) {
+			userList = new User1[userCnt+1];
+			userList[userCnt] = new User1();
+		}
+		
+		else {
+			User1[] tempList = userList;
+			userList = new User1[userCnt + 1];
+			for (int i = 0; i < userCnt; i++) {
+				userList[i] = tempList[i];
+			}
+			tempList = null;
+		}
+		
+		userList[userCnt] = new User1();
+		userList[userCnt].id = id;
+		userList[userCnt].pw = pw;
+		userCnt++;
+		
+		System.out.println("[메시지] " + id + "님 회원 가입을 축하합니다.");
+		//저장 미구현.....
 	}
 
 	
