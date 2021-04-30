@@ -1,4 +1,4 @@
-package step8_02_atm2;
+package step8_02_atm2.copy1;
 
 import java.io.BufferedReader;
 import java.io.File;
