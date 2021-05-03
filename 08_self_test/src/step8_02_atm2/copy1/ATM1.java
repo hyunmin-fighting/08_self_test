@@ -10,6 +10,9 @@ public class ATM1 {
 	
 	void play() {
 		
+		FileManager1.getInstance().load();
+		UserManager1.getInstance().printAllUser();
+		
 		while (true) {
 			
 			System.out.println("[ATM]");
@@ -26,11 +29,22 @@ public class ATM1 {
 	}
 	
 	
-	void login() {}
+	void login() {
+		
+		identifier = um.logUser();
+		
+		if(identifier == -1) {
+			System.out.println("[메시지] ID와 PW를 확인하세요.");
+		}
+		else {
+			loginMenu();
+		}
+		
+	}
 	
 	
 	void loginMenu() {
-		
+	
 		while(true) {
 			
 			System.out.println("[" + um.userList[identifier].id + "님, 환영합니다.]");
@@ -38,7 +52,26 @@ public class ATM1 {
 			System.out.println("메뉴 선택 : ");
 			int selectMenu = scan.nextInt();
 			
-			
+			if (selectMenu == 1) {
+				AccountManager1.getInstance().createAcc(identifier);
+				FileManager1.getInstance().save();
+			}
+			else if(selectMenu == 2) {
+				AccountManager1.getInstance().deleteAcc(identifier);
+				FileManager1.getInstance().save();
+			}
+			else if(selectMenu == 3) {
+				AccountManager1.getInstance().printAcc(identifier);
+			}
+			else if(selectMenu == 4) {
+				um.deleteMember(identifier);
+				break;
+			}
+			else if(selectMenu == 0) {
+				identifier = -1;
+				System.out.println("[메시지] 로그아웃되었습니다.");
+				break;
+			}
 		}
 		
 	}

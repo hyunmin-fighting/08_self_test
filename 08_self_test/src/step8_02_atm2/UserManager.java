@@ -5,11 +5,15 @@ import java.util.Scanner;
 
 public class UserManager {
 	
-
+	//싱글톤
+	private UserManager(){}
+	private static UserManager instance = new UserManager();
+	public static UserManager getInstance() {
+		return instance;
+	}
 	
 	
 	Scanner scan = new Scanner(System.in);
-	
 	Random ran = new Random();
 	
 	final int ACC_MAX_CNT = 3;			// 최대 개설 가능한 계좌 수

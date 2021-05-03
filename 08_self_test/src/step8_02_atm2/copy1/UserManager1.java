@@ -20,7 +20,17 @@ public class UserManager1 {
 	int userCnt = 0;					// 전체 회원 수
 	
 	
-//	void printAllUser() {}
+	void printAllUser() {
+		for (int i = 0; i < userCnt; i++) {
+			System.out.print((i+1) + ".ID(" + userList[i].id + ")\tPW(" + userList[i].pw + ")\t");
+			if(userList[i].accCnt != 0) {
+				for (int j = 0; j < userList[i].accCnt; j++) {
+					System.out.print("(" + userList[i].acc[j].accNumber + ":" + userList[i].acc[j].money + ")");
+				}
+			}
+			System.out.println();
+		}
+	}
 	
 	
 	boolean getCheckAcc(String account) {
@@ -105,7 +115,25 @@ public class UserManager1 {
 	}
 
 	
-//	int deleteMember(int identifier) {}
+	int deleteMember(int identifier) {
+		
+		User1[] temp = userList;
+		userList = new User1[userCnt - 1];
+		int j = 0;
+		for (int i = 0; i < userCnt; i++) {
+			if(i != identifier) {
+				userList[j++] = temp[i];
+			}
+		}
+		userCnt--;
+		temp = null;
+		identifier = -1;
+		
+		System.out.println("[메시지] 탈퇴되었습니다.");
+		// 저장 미구현....
+		return identifier;
+		
+	}
 	
 	// (테스트생성용 메서드)  : 테스트 데이타 > 더미
 //	void setDummy() {

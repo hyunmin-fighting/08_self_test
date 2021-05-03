@@ -3,7 +3,7 @@ package step8_02_atm2;
 import java.util.Scanner;
 
 public class ATM {
-	
+	Scanner scan = new Scanner(System.in);
 
 	
 	void play() {
