@@ -9,20 +9,16 @@ public class FileManager2 {
 		return instance;
 	}
 	
-	
-	void setData() {
-
-	}
+	String fileName = "ATM text";
 	
 	
-	void save() {
-
-	}
+	void setData() {}
 	
 	
-	void load() {
-
-	}
+	void save() {}
+	
+	
+	void load() {}
 	
 }
 
