@@ -11,9 +11,12 @@ public class ATM2 {
 	
 	void play() {
 		
+		FileManager2.getInstance().load();
+		um.printAllUser();
 		
 		while (true) {
 			
+
 			System.out.println("[ATM]");
 			System.out.println("[1.회원가입]\n[2.로그인]\n[0.종료]");
 			System.out.print("메뉴 선택 : ");
@@ -49,12 +52,14 @@ public class ATM2 {
 				if(selectMenu == 1) {
 					//계좌생성
 					AccountManager2.getInstance().createAcc(identifier);
+					FileManager2.getInstance().save();
 	
 				}
 				else if(selectMenu == 2) {
 					//계좌삭제
 					AccountManager2.getInstance().deleteAcc(identifier);
-					
+					FileManager2.getInstance().save();
+
 				}
 				else if(selectMenu == 3) {
 					//계좌조회

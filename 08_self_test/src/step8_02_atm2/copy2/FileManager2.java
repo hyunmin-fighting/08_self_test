@@ -107,16 +107,47 @@ public class FileManager2 {
 				}
 				
 				//String 배열을 만들고 data 값을 띄어쓰기 기준으로 끊어서 배열 인덱스별로 나누어 담는다
-				String[] temp = data.split("\n"); 
+				String[] tmp = data.split("\n"); 
 				// temp의 0번 인덱스 값은 고객수 값으로 문자형태를 정수형태로 변환하여 해당 변수에 담는다.
-				um.userCnt = Integer.parseInt(temp[0]);
+				um.userCnt = Integer.parseInt(tmp[0]);
 				um.userList = new User2[um.userCnt]; // userList 배열크기를 재정의
 				// userCnt크기만큼 객체를 생성 
 				for (int i = 0; i < um.userCnt; i++) {
 					um.userList[i] = new User2();
 				}
+				
+				int j=0;
+				for (int i = 1; i < tmp.length; i+=4) {
+					String id = tmp[i];
+					String pw = tmp[i+1];
+					int accCount = Integer.parseInt(tmp[i+2]);
+					um.userList[j].id = id;
+					um.userList[j].pw = pw;
+					um.userList[j].accCnt = accCount;
+					String accInfo = tmp[i+3];
+					if(accCount == 1) {
+						String[] temp = accInfo.split("/");
+						um.userList[j].acc[0] = new Account2();
+						um.userList[j].acc[0].accNumber = temp[0];
+						um.userList[j].acc[0].money = Integer.parseInt(temp[1]);
+					}
+					else if(accCount > 1) {
+						String[] temp = accInfo.split(",");
+						for (int k = 0; k < temp.length; k++) {
+							String[] parse = temp[k].split("/");
+							um.userList[j].acc[k] = new Account2();
+							um.userList[j].acc[k].accNumber = parse[0];
+							um.userList[j].acc[k].money = Integer.parseInt(parse[1]);
+							
+						}
+					}
+					j++;
+				}
 			}
-
+			else {
+				setData();
+				save();
+			}
 			
 			
 			
